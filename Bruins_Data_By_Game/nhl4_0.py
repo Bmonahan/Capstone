@@ -1,0 +1,2 @@
+import nhl
+print nhl.readrows("http://www.nhl.com/stats/team?aggregate=0&gameType=2&report=teamsummary&reportType=season&seasonFrom=20172018&seasonTo=20172018&filter=gamesPlayed,gte,1&sort=points,wins",10)
