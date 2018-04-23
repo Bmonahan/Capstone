@@ -5,9 +5,10 @@ from pprint import pprint
 maxData = 16282
 data = json.load(open('2011_12-2017-18.json'))
 sat = json.load(open('SAT_11_18.json'))
+hit = json.load(open('HIT_11_18.json'))
 with open('NHL_2011_2018.csv','w') as new_file:
     csv_writer = csv.writer(new_file,delimiter=',')
-    header = ['gameID','tm','oppTm','loc','ga','gf','fowP','foL','foW','pkPctg','ppPctg','sf','sa','satp','ozf','dzf','spsv']
+    header = ['gameID','tm','oppTm','loc','ga','gf','fowP','foL','foW','pkPctg','ppPctg','sf','sa','satp','ozf','dzf','spsv','hit','bks','tka','gva']
     csv_writer.writerow(header)
     for i in range(0,maxData):
         index = 0
@@ -19,18 +20,32 @@ with open('NHL_2011_2018.csv','w') as new_file:
             satGID = str(sat['data'][x]['gameId'])
             satTm = str(sat['data'][x]['teamAbbrev'])
             if satGID == gameId and satTm == teamAbb:
-                index = x
                 #print x
                 SATP = str(sat['data'][x]['shotAttemptsPctg'])
                 OZF = str(sat['data'][x]['offensiveZoneFaceoffs'])
                 DZF = str(sat['data'][x]['defensiveZoneFaceoffs'])
                 SPSv = str(sat['data'][x]['shootingPlusSavePctg']*100)
+                break
+        for y in range(0,maxData):
+            hitGID = str(hit['data'][y]['gameId'])
+            hitTm = str(hit['data'][y]['teamAbbrev'])
+            if hitGID == gameId and hitTm == teamAbb:
+                index = y
+                hits = str(hit['data'][y]['hits'])
+                bks = str(hit['data'][y]['blockedShots'])
+                tka = str(hit['data'][y]['takeaways'])
+                gva = str(hit['data'][y]['giveaways'])
+                break
 
         # sDat.write(teamAbb+"\n")
         # sDat.write(gameId+"\n")
         oppTm = str(data['data'][i]['opponentTeamAbbrev'])
         #print(teamAbb)
         gameLoc = str(data["data"][i]["gameLocationCode"])
+        if gameLoc == 'H':
+            gameLoc = '1'
+        else:
+            gameLov = '0'    
 
         goalAgainst = str(data["data"][i]["goalsAgainst"])
 
@@ -50,7 +65,7 @@ with open('NHL_2011_2018.csv','w') as new_file:
 
         sa = str(data["data"][i]["shotsAgainst"])
 
-        line = [gameId,teamAbb,oppTm,gameLoc,goalAgainst,goalFor,foWP,foL,foW,pkPctg,ppPctg,sf,sa,SATP,OZF,DZF,SPSv]
+        line = [gameId,teamAbb,oppTm,gameLoc,goalAgainst,goalFor,foWP,foL,foW,pkPctg,ppPctg,sf,sa,SATP,OZF,DZF,SPSv,hits,bks,tka,gva]
         print line
         #line = gameId+','+teamAbb+','+gameLoc+','+goalFor+','+goalAgainst+','+foWP+','+foL+','+foW+','+pkPctg+','+ppPctg+','+sf+','+sa
         csv_writer.writerow(line)
