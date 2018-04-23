@@ -16,23 +16,23 @@ with open('NHL_2011_2018.csv','w') as new_file:
         oppTm = str(data['data'][i]['opponentTeamAbbrev'])
         #print(teamAbb)
         gameLoc = str(data["data"][i]["gameLocationCode"])
-        
+
         goalAgainst = str(data["data"][i]["goalsAgainst"])
-        
+
         goalFor = str(data["data"][i]["goalsFor"])
-        
+
         foWP = str(data["data"][i]["faceoffWinPctg"])
-        
+
         foL = str(data["data"][i]["faceoffsLost"])
-        
+
         foW = str(data["data"][i]["faceoffsWon"])
-        
+
         pkPctg = str(data["data"][i]["penaltyKillPctg"])
-        
+
         ppPctg = str(data["data"][i]["ppPctg"])
-        
+
         sf = str(data["data"][i]["shotsFor"])
-        
+
         sa = str(data["data"][i]["shotsAgainst"])
         line = [gameId,teamAbb,oppTm,gameLoc,goalAgainst,goalFor,foWP,foL,foW,pkPctg,ppPctg,sf,sa]
         print line
