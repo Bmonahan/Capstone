@@ -20,11 +20,11 @@ with open('NHL_2011_2018.csv','w') as new_file, open('sort_data.txt','w') as sDa
             satTm = str(sat['data'][x]['teamAbbrev'])
             if satGID == gameId and satTm == teamAbb:
                 index = x
-                print x
+                #print x
                 SATP = str(sat['data'][x]['shotAttemptsPctg'])
                 OZF = str(sat['data'][x]['offensiveZoneFaceoffs'])
                 DZF = str(sat['data'][x]['defensiveZoneFaceoffs'])
-                SPSv = str(sat['data'][x]['shootingPlusSavePctg'])
+                SPSv = str(sat['data'][x]['shootingPlusSavePctg']*100)
 
         # sDat.write(teamAbb+"\n")
         # sDat.write(gameId+"\n")
