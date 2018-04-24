@@ -18,6 +18,9 @@ maxData = 16282
 data = json.load(open('2011_12-2017-18.json'))
 sat = json.load(open('SAT_11_18.json'))
 hit = json.load(open('HIT_11_18.json'))
+# Add misses stat
+#Calculate Fenwick for
+
 with open('NHL_2011_2018.csv','w') as new_file:
     csv_writer = csv.writer(new_file,delimiter=',')
     header = ['gameID','tm','oppTm','wol','loc','ga','gf','fowP','foL','foW','pkPctg','ppPctg','sf','sa','satp','ozf','dzf','spsv','hit','bks','tka','gva']
