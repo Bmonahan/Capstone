@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import pydot_ng as pydot
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from keras.models import Sequential
@@ -8,7 +9,7 @@ from keras.layers import Dense
 from keras.callbacks import CSVLogger
 from keras import metrics
 from keras.wrappers.scikit_learn import KerasClassifier
-#from keras.utils import plot_model
+from keras.utils import plot_model
 from sklearn.metrics import confusion_matrix, precision_score,recall_score,f1_score,cohen_kappa_score
 import os as os
 
