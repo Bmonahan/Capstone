@@ -54,3 +54,4 @@ score,acc = model.evaluate(X_test,y_test,verbose=1)
 print 'Loss Score: ', score
 print 'Accuracy: ',acc*100
 print '--------------------------------------------------------'
+os.system('python LogPlotTest.py')
