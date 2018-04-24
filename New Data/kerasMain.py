@@ -8,10 +8,11 @@ from keras.layers import Dense
 from keras.callbacks import CSVLogger
 from keras import metrics
 from keras.wrappers.scikit_learn import KerasClassifier
+#from keras.utils import plot_model
 from sklearn.metrics import confusion_matrix, precision_score,recall_score,f1_score,cohen_kappa_score
 import os as os
 
-np.random.seed(7)
+seed = np.random.seed(7)
 games = pd.read_csv('NHL_2011_2018.csv',sep=',')
 
 #print games
@@ -22,7 +23,7 @@ y = games.ix[:,3:4] #Wins or losses
 # ynum = y.values
 
 
-X_train, X_test,y_train,y_test = train_test_split(X, y, test_size=0.43, random_state=42)
+X_train, X_test,y_train,y_test = train_test_split(X, y, test_size=0.25, random_state=seed)
 # X_train = scaler.transform(X_train)
 # X_test = scaler.transform(X_test)
 
@@ -36,6 +37,7 @@ model.add(Dense(1, activation='sigmoid'))
 # Compile model
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
+#plot_model(model, to_file='model.png')
 model.summary()
 
 config = model.get_config()
