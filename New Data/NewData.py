@@ -1,6 +1,18 @@
 import json
 import csv
+import time,sys
 from pprint import pprint
+
+#https://gist.github.com/vladignatyev/06860ec2040cb497f0f3
+def progress(count, total, status=''):
+    bar_len = 60
+    filled_len = int(round(bar_len * count / float(total)))
+
+    percents = round(100.0 * count / float(total), 1)
+    bar = '=' * filled_len + '-' * (bar_len - filled_len)
+
+    sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
+    sys.stdout.flush()
 #16281 MAX
 maxData = 16282
 data = json.load(open('2011_12-2017-18.json'))
@@ -11,6 +23,8 @@ with open('NHL_2011_2018.csv','w') as new_file:
     header = ['gameID','tm','oppTm','loc','ga','gf','fowP','foL','foW','pkPctg','ppPctg','sf','sa','satp','ozf','dzf','spsv','hit','bks','tka','gva']
     csv_writer.writerow(header)
     for i in range(0,maxData):
+        # percent = str((float(i)/maxData)*100)
+        # print percent[0:2]+'%'
         index = 0
         team = ''
         gameId = str(data["data"][i]["gameId"])
@@ -45,7 +59,7 @@ with open('NHL_2011_2018.csv','w') as new_file:
         if gameLoc == 'H':
             gameLoc = '1'
         else:
-            gameLov = '0'    
+            gameLoc = '0'
 
         goalAgainst = str(data["data"][i]["goalsAgainst"])
 
@@ -66,7 +80,9 @@ with open('NHL_2011_2018.csv','w') as new_file:
         sa = str(data["data"][i]["shotsAgainst"])
 
         line = [gameId,teamAbb,oppTm,gameLoc,goalAgainst,goalFor,foWP,foL,foW,pkPctg,ppPctg,sf,sa,SATP,OZF,DZF,SPSv,hits,bks,tka,gva]
-        print line
+        progress(i, maxData, status=gameId+' '+teamAbb+' '+oppTm)
+        #print gameId+' '+teamAbb+' '+oppTm
+
         #line = gameId+','+teamAbb+','+gameLoc+','+goalFor+','+goalAgainst+','+foWP+','+foL+','+foW+','+pkPctg+','+ppPctg+','+sf+','+sa
         csv_writer.writerow(line)
 
