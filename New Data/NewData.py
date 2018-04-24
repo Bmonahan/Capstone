@@ -9,7 +9,7 @@ def progress(count, total, status=''):
     filled_len = int(round(bar_len * count / float(total)))
 
     percents = round(100.0 * count / float(total), 1)
-    bar = '=' * filled_len + '-' * (bar_len - filled_len)
+    bar = '#' * filled_len + '-' * (bar_len - filled_len)
 
     sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
     sys.stdout.flush()
@@ -20,7 +20,7 @@ sat = json.load(open('SAT_11_18.json'))
 hit = json.load(open('HIT_11_18.json'))
 with open('NHL_2011_2018.csv','w') as new_file:
     csv_writer = csv.writer(new_file,delimiter=',')
-    header = ['gameID','tm','oppTm','loc','ga','gf','fowP','foL','foW','pkPctg','ppPctg','sf','sa','satp','ozf','dzf','spsv','hit','bks','tka','gva']
+    header = ['gameID','tm','oppTm','wol','loc','ga','gf','fowP','foL','foW','pkPctg','ppPctg','sf','sa','satp','ozf','dzf','spsv','hit','bks','tka','gva']
     csv_writer.writerow(header)
     for i in range(0,maxData):
         # percent = str((float(i)/maxData)*100)
@@ -55,6 +55,13 @@ with open('NHL_2011_2018.csv','w') as new_file:
         # sDat.write(gameId+"\n")
         oppTm = str(data['data'][i]['opponentTeamAbbrev'])
         #print(teamAbb)
+        wins = str(data['data'][i]['wins'])
+        #loss = str(data['data'][i]['losses'])
+        if wins =='1':
+            wol = '1'
+        else:
+            wol = '0'
+
         gameLoc = str(data["data"][i]["gameLocationCode"])
         if gameLoc == 'H':
             gameLoc = '1'
@@ -79,7 +86,7 @@ with open('NHL_2011_2018.csv','w') as new_file:
 
         sa = str(data["data"][i]["shotsAgainst"])
 
-        line = [gameId,teamAbb,oppTm,gameLoc,goalAgainst,goalFor,foWP,foL,foW,pkPctg,ppPctg,sf,sa,SATP,OZF,DZF,SPSv,hits,bks,tka,gva]
+        line = [gameId,teamAbb,oppTm,wol,gameLoc,goalAgainst,goalFor,foWP,foL,foW,pkPctg,ppPctg,sf,sa,SATP,OZF,DZF,SPSv,hits,bks,tka,gva]
         progress(i, maxData, status=gameId+' '+teamAbb+' '+oppTm)
         #print gameId+' '+teamAbb+' '+oppTm
 

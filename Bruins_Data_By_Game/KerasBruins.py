@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -74,6 +75,7 @@ score,acc = model.evaluate(X_test,y_test,verbose=1)
 print 'Loss Score: ', score
 print 'Accuracy: ',acc*100
 print '--------------------------------------------------------'
+os.system('python LogPlotTest.py')
 # bruins_model = create_bruinsfull_model()
 # model.summary()
 # bruins_fit = bruins_model.fit(X, y, validation_split=.33, epochs=200,batch_size=10, verbose=1)
@@ -82,7 +84,3 @@ print '--------------------------------------------------------'
 # score, acc = bruins_model.evaluate(X, y, verbose=1)
 # print 'Score: ', score
 # print 'Accuracy: ', acc*100
-
-
-
-
