@@ -9,6 +9,7 @@ from keras.callbacks import CSVLogger
 from keras import metrics
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.metrics import confusion_matrix, precision_score,recall_score,f1_score,cohen_kappa_score
+import os as os
 
 np.random.seed(7)
 games = pd.read_csv('NHL_2011_2018.csv',sep=',')
@@ -28,10 +29,9 @@ X_train, X_test,y_train,y_test = train_test_split(X, y, test_size=0.43, random_s
 # create model
 model = Sequential()
 #model.add(Dense(32,input_dim=8,activation='relu',input_shape=(17,)))
-model.add(Dense(32,input_dim=17,activation='relu'))
-model.add(Dense(16, activation='relu'))
+model.add(Dense(24,input_dim=17,activation='relu'))
+model.add(Dense(12, activation='relu'))
 model.add(Dense(8, activation='relu'))
-model.add(Dense(2, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))
 # Compile model
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -42,16 +42,15 @@ config = model.get_config()
 weight = model.get_weights()
 
 logger = CSVLogger('log.csv',separator=',',append=False)
-fit = model.fit(X_train, y_train, validation_split=0.33,epochs=150, batch_size=2, verbose=1,callbacks=[logger])
-y_test_pred = model.predict(X_train)
-print y_test_pred
+fit = model.fit(X_train, y_train, validation_split=0.33,epochs=25, batch_size=2, verbose=1,callbacks=[logger])
 
 
 print '----------------'
-
+prediction = model.predict(X_train)
+print prediction
 score,acc = model.evaluate(X_test,y_test,verbose=1)
 #print("%s: %.2f%%" % [model.metrics_names[1], score[2] * 100])
 print 'Loss Score: ', score
-print 'Accuracy: ',acc*100
+print 'Accuracy: ',acc
 print '--------------------------------------------------------'
 os.system('python LogPlotTest.py')
