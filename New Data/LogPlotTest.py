@@ -16,7 +16,7 @@ def run():
     plt.legend(['Accuracy', 'Loss'], loc='upper left')
     plt.ylabel('Accuracy/Loss')
     plt.xlabel('Epochs')
-    plt.get_yaxis().set_major_locator(LinearLocator(numticks=100))
+    #plt.get_yaxis().set_major_locator(LinearLocator(numticks=100))
     plt.show()
     exit()
 
