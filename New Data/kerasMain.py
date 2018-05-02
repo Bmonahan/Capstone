@@ -32,80 +32,24 @@ y = games.ix[:,3:4] #Wins or losses
 # ynum = y.values
 
 
-X_train, X_test,y_train,y_test = train_test_split(X, y, test_size=0.25, random_state=seed)
+X_train, X_test,y_train,y_test = train_test_split(X, y, test_size=0.25, random_state=seed,shuffle=True)
+print X_train
 # X_train = scaler.transform(X_train)
 # X_test = scaler.transform(X_test)
 def quadDense():
     # create model
     model = Sequential()
     #model.add(Dense(32,input_dim=8,activation='relu',input_shape=(17,)))
-    model.add(Dense(8,input_dim=17,activation='relu'))
-    model.add(Dense(4, activation='relu'))
-    model.add(Dense(2, activation='relu'))
-    model.add(Dense(1, activation='sigmoid'))
-    # Compile model
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-    return model
-
-def testModel():
-    model = Sequential()
-    #model.add(Dense(32,input_dim=8,activation='relu',input_shape=(17,)))
-    model.add(Dense(34,input_dim=17,activation='relu'))
+    model.add(Dense(17,input_dim=17,activation='relu'))
     model.add(Dense(12, activation='relu'))
-    model.add(Flatten())
-    model.add(Dense(8, activation='relu'))
-    model.add(Flatten())
+    model.add(Dense(4, activation='relu'))
     model.add(Dense(1, activation='sigmoid'))
     # Compile model
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
-
-def DefineModel():
-    activation_func = 'relu'
-    loss_function = 'binary_crossentropy'
-    #loss_function = 'mean_squared_error'
-
-    dropout_rate = 0.4
-    weight_regularizer = None
-    learning_rate = 0.007
-
-    ## Initialize model.
-    model = Sequential()
-    ## 1st Layer
-    ## Dense' means fully-connected.
-    model.add(Dense(17, input_dim=17, W_regularizer=weight_regularizer))
-    model.add(Activation(activation_func))
-    model.add(Dropout(0.5))
-
-    ## 2nd Layer
-    model.add(Dense(8, input_dim=17, W_regularizer=weight_regularizer))
-    model.add(Activation(activation_func))
-    model.add(Dropout(dropout_rate))
-
-
-    ## 5th Layer
-    model.add(Dense(4))
-    model.add(Activation(activation_func))
-    model.add(Dropout(dropout_rate))
-
-    ## Adding Softmax Layer
-    ## Last layer has the same dimension as the number of classes
-    model.add(Dense(1))
-
-    ## For classification, the activation is softmax
-    model.add(Activation('softmax'))
-
-    ## Define optimizer. we select Adam
-    opt = Adam(lr=learning_rate, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
-    #opt = SGD(lr=learning_rate, clipnorm=5.)
-
-    ## Define loss function = 'categorical_crossentropy' or 'mean_squared_error'
-    model.compile(loss=loss_function, optimizer=opt, metrics=["accuracy"])
-    return model
-
 
 #plot_model(model, to_file='model.png')
-model = DefineModel()
+model = quadDense()
 model.summary()
 
 config = model.get_config()
@@ -113,16 +57,39 @@ weight = model.get_weights()
 
 logger = CSVLogger('log.csv',separator=',',append=False)
 start_time = time.time()
-fit = model.fit(X_train, y_train, validation_split=0.12,epochs=50, batch_size=2, verbose=1,callbacks=[logger])
+fit = model.fit(X_train, y_train, validation_split=0.33,epochs=20, batch_size=10, verbose=1,callbacks=[logger])
 
 
 print '----------------'
 print("Training took {0} seconds.".format(time.time() - start_time))
-# prediction = model.predict(X_train)
-# print prediction
+
 score,acc = model.evaluate(X_test,y_test,verbose=1)
 #print("%s: %.2f%%" % [model.metrics_names[1], score[2] * 100])
 print 'Loss Score: ', score
 print 'Accuracy: ',acc
 print '--------------------------------------------------------'
-os.system('python LogPlotTest.py')
+
+countF = open('count.txt','r')
+count = int(countF.read())
+countStr = str(count)
+print type(count)
+countF.close()
+
+model_json = model.to_json()
+with open("model"+'_'+countStr+".json", "w") as json_file:
+    json_file.write(model_json)
+# serialize weights to HDF5
+model.save_weights("model.h5")
+print("Saved model to disk")
+
+# json_file = open('model.json', 'r')
+# loaded_model_json = json_file.read()
+# json_file.close()
+# loaded_model = model_from_json(loaded_model_json)
+#
+# loaded_model.load_weights("model.h5")
+# print("Loaded")
+#
+# loaded_model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+# score = loaded_model.evaluate(X, Y, verbose=0)
+# print("%s: %.2f%%" % (loaded_model.metrics_names[1], score[1]*100))
