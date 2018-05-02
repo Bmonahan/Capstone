@@ -67,7 +67,7 @@ def DefineModel():
 
     dropout_rate = 0.4
     weight_regularizer = None
-    learning_rate = 0.005
+    learning_rate = 0.007
 
     ## Initialize model.
     model = Sequential()
@@ -105,7 +105,7 @@ def DefineModel():
 
 
 #plot_model(model, to_file='model.png')
-model = quadDense()
+model = DefineModel()
 model.summary()
 
 config = model.get_config()
