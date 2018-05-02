@@ -22,28 +22,29 @@ from keras.utils import np_utils
 import time
 
 seed = np.random.seed(7)
-games = pd.read_csv('NHL_2011_2018.csv',sep=',')
+games = pd.read_csv('11_18_raw.csv',sep=',')
 
 #print games
 
-X = games.ix[:,4:21] #All stats
-y = games.ix[:,3:4] #Wins or losses
+X = games.ix[:,0:18] #All stats
+y = games.ix[:,18] #Wins or losses
 
 # ynum = y.values
 
 
-X_train, X_test,y_train,y_test = train_test_split(X, y, test_size=0.25, random_state=seed,shuffle=True)
-print X_train
+X_train, X_test,y_train,y_test = train_test_split(X, y, test_size=0.33, random_state=seed, shuffle=True)
 # X_train = scaler.transform(X_train)
 # X_test = scaler.transform(X_test)
 def quadDense():
     # create model
     model = Sequential()
-    #model.add(Dense(32,input_dim=8,activation='relu',input_shape=(17,)))
-    model.add(Dense(17,input_dim=17,activation='relu'))
-    model.add(Dense(12, activation='relu'))
-    model.add(Dense(4, activation='relu'))
-    model.add(Dense(1, activation='sigmoid'))
+    model.add(Dense(18,input_shape=(18,), kernel_initializer='normal'))
+    model.add(Activation('relu'))
+    model.add(Dense(9, kernel_initializer='normal'))
+    model.add(Activation('relu'))
+    model.add(Dense(1, kernel_initializer='normal'))
+    model.add(Activation('sigmoid'))
+
     # Compile model
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
@@ -68,7 +69,22 @@ score,acc = model.evaluate(X_test,y_test,verbose=1)
 print 'Loss Score: ', score
 print 'Accuracy: ',acc
 print '--------------------------------------------------------'
+predictions = model.predict(X)
+# round predictions
+rounded = [round(x[0]) for x in predictions]
+#print(rounded)
+print len(rounded)
+outcome = pd.read_csv('NHL_2011_2018.csv',sep=',')
 
+o = games.ix[:,4] #Wins or losses
+counted = []
+for x in range(0,len(rounded)):
+    if(o[x]==rounded[x]):
+        counted.append("correct")
+
+print len(counted)
+
+print '--------------------------------------------------------'
 countF = open('count.txt','r')
 count = int(countF.read())
 countStr = str(count)
