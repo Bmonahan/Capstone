@@ -8,9 +8,13 @@ import csv
 import time,sys
 from pprint import pprint
 games = pd.read_csv('11_18_raw.csv',sep=',')
+bruins = pd.read_csv('bruins_raw_10_11.csv',sep=',')
 
 #print games
-
+Bx = bruins.ix[:,0:16]
+By = bruins.ix[:,16]
+# Bx = games.ix[0:300,0:16]
+# By = games.ix[0:300,16]
 X = games.ix[:,0:16] #All stats
 Y = games.ix[:,16] #Wins or losses
 
@@ -28,7 +32,7 @@ score = loaded_model.evaluate(X, Y, verbose=0)
 print("%s: %.5f%%" % (loaded_model.metrics_names[1], score[1]*100))
 print("%s: %.5f" % (loaded_model.metrics_names[0], score[0]))
 
-predictions = loaded_model.predict(X)
+predictions = loaded_model.predict(Bx)
 # round predictions
 print predictions
 rounded = [round(x[0]) for x in predictions]
@@ -41,7 +45,7 @@ with open('outcome.csv','w') as new_file:
     csv_writer = csv.writer(new_file,delimiter=',')
     header = ['wol']
     csv_writer.writerow(header)
-    for i in range(0,16282):
+    for i in range(0,len(rounded)):
         temp = rounded[i]
         line=[temp]
         csv_writer.writerow(line)
