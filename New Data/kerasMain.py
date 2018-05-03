@@ -1,24 +1,20 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
-import pydot_ng as pydot
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from keras.models import Sequential
-from keras.layers import Dense, Flatten
 from keras.callbacks import CSVLogger
 from keras import metrics
 from keras.wrappers.scikit_learn import KerasClassifier
 from keras.utils import plot_model
-from sklearn.metrics import confusion_matrix, precision_score,recall_score,f1_score,cohen_kappa_score
-import os as os
 import keras.callbacks as cb
-from keras.datasets import mnist
-from keras.layers.core import Activation, Dense, Dropout
+from keras.layers.core import Activation, Dense, Dropout, Flatten
 from keras.models import Sequential
 from keras.optimizers import SGD,Adam
-from keras.regularizers import l1, l2
 from keras.utils import np_utils
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import pydot_ng as pydot
+import os as os
 import time
 
 seed = np.random.seed(7)
@@ -85,15 +81,3 @@ with open("model_83pctg.json", "w") as json_file:
 # serialize weights to HDF5
 model.save_weights("model_83pctg.h5")
 print("Saved model to disk")
-
-# json_file = open('model.json', 'r')
-# loaded_model_json = json_file.read()
-# json_file.close()
-# loaded_model = model_from_json(loaded_model_json)
-#
-# loaded_model.load_weights("model.h5")
-# print("Loaded")
-#
-# loaded_model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-# score = loaded_model.evaluate(X, Y, verbose=0)
-# print("%s: %.2f%%" % (loaded_model.metrics_names[1], score[1]*100))

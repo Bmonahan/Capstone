@@ -34,10 +34,12 @@ print("%s: %.5f" % (loaded_model.metrics_names[0], score[0]))
 
 predictions = loaded_model.predict(Bx)
 # round predictions
-print predictions
+#print predictions
 rounded = [round(x[0]) for x in predictions]
 #print(rounded)
 print len(rounded)
+import LogPlotTest.py
+run()
 
 print '--------------------------------------------------------'
 
