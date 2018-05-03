@@ -4,6 +4,9 @@ from keras.models import model_from_json
 import numpy
 import os
 import pandas as pd
+import csv
+import time,sys
+from pprint import pprint
 games = pd.read_csv('11_18_raw.csv',sep=',')
 
 #print games
@@ -33,6 +36,15 @@ rounded = [round(x[0]) for x in predictions]
 print len(rounded)
 
 print '--------------------------------------------------------'
+
+with open('outcome.csv','w') as new_file:
+    csv_writer = csv.writer(new_file,delimiter=',')
+    header = ['wol']
+    csv_writer.writerow(header)
+    for i in range(0,16282):
+        temp = rounded[i]
+        line=[temp]
+        csv_writer.writerow(line)
 
 
 #print loaded_model.metrics_names[0]
