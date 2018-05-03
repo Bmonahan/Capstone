@@ -25,4 +25,14 @@ score = loaded_model.evaluate(X, Y, verbose=0)
 print("%s: %.5f%%" % (loaded_model.metrics_names[1], score[1]*100))
 print("%s: %.5f" % (loaded_model.metrics_names[0], score[0]))
 
+predictions = loaded_model.predict(X)
+# round predictions
+print predictions
+rounded = [round(x[0]) for x in predictions]
+#print(rounded)
+print len(rounded)
+
+print '--------------------------------------------------------'
+
+
 #print loaded_model.metrics_names[0]

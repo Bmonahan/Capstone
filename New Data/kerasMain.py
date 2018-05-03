@@ -71,10 +71,10 @@ score,acc = model.evaluate(X_test,y_test,verbose=1)
 print 'Loss Score: ', score
 print 'Accuracy: ',acc
 print '--------------------------------------------------------'
-predictions = model.predict(X)
+predictions = model.predict(X_test)
 # round predictions
 rounded = [round(x[0]) for x in predictions]
-#print(rounded)
+print(rounded)
 print len(rounded)
 
 print '--------------------------------------------------------'
